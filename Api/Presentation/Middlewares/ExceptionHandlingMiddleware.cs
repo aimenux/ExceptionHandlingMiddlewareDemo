@@ -38,12 +38,22 @@ public class ExceptionHandlingMiddleware
             Instance = $"demo:error:{Guid.NewGuid()}"
         };
 
-        problemDetails.Status = exception switch
+        switch (exception)
         {
-            InfrastructureException _ => 503,
-            DomainException _ => 500,
-            _ => problemDetails.Status
-        };
+            case InfrastructureException:
+                problemDetails.Status = 503;
+                problemDetails.Title = exception.Message;
+                break;
+
+            case DomainException:
+                problemDetails.Status = 501;
+                problemDetails.Title = exception.Message;
+                break;
+
+            default:
+                problemDetails.Status = 500;
+                break;
+        }
 
         _logger.LogError("An unexpected error occurred {@problemDetails}", problemDetails);
 

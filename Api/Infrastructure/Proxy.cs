@@ -35,7 +35,7 @@ namespace Api.Infrastructure
             };
         }
 
-        internal class Randomize
+        public class Randomize
         {
             private static readonly Random Random = new(Guid.NewGuid().GetHashCode());
 
