@@ -15,4 +15,9 @@ public class InfrastructureException : Exception
     {
         throw new InfrastructureException("Partner WebService is taking too long to respond");
     }
+
+    public static InfrastructureException PartnerWebServiceReceivingTooManyRequests()
+    {
+        throw new InfrastructureException("Partner WebService is receiving too many requests");
+    }
 }

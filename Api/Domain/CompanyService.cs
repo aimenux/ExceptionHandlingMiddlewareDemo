@@ -14,7 +14,12 @@ namespace Api.Domain
         public async Task<Company> GetCompanyAsync(string registrationNumber, CancellationToken cancellationToken = default)
         {
             var company = await _proxy.GetCompanyAsync(registrationNumber, cancellationToken);
-            
+            CheckEligibilityRules(company);
+            return company;
+        }
+
+        private static void CheckEligibilityRules(Company company)
+        {
             if (company.CompanyStatus != CompanyStatus.Active)
             {
                 throw DomainException.InvalidCompanyStatus();
@@ -24,8 +29,6 @@ namespace Api.Domain
             {
                 throw DomainException.InvalidCompanyAddress();
             }
-
-            return company;
         }
     }
 }

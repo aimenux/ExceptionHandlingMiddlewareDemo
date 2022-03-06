@@ -43,6 +43,7 @@ namespace Tests
                 Add(_ => throw DomainException.InvalidCompanyAddress(), 501);
                 Add(_ => throw InfrastructureException.PartnerWebServiceIsDown(), 503);
                 Add(_ => throw InfrastructureException.PartnerWebServiceIsTakingTooLongToRespond(), 503);
+                Add(_ => throw InfrastructureException.PartnerWebServiceReceivingTooManyRequests(), 503);
             }
         }
     }

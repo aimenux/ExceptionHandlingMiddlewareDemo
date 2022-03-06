@@ -10,7 +10,7 @@ namespace Api.Infrastructure
 
             return nextValue switch
             {
-                < 200 => Task.FromResult(new Company
+                < 300 => Task.FromResult(new Company
                 {
                     Name = Randomize.RandomString(10),
                     RegistrationNumber = registrationNumber,
@@ -30,8 +30,9 @@ namespace Api.Infrastructure
                     RegistrationNumber = registrationNumber,
                     CompanyStatus = CompanyStatus.Active
                 }),
-                < 800 => throw InfrastructureException.PartnerWebServiceIsDown(),
-                _ => throw InfrastructureException.PartnerWebServiceIsTakingTooLongToRespond()
+                < 700 => throw InfrastructureException.PartnerWebServiceIsDown(),
+                < 800 => throw InfrastructureException.PartnerWebServiceIsTakingTooLongToRespond(),
+                _ => throw InfrastructureException.PartnerWebServiceReceivingTooManyRequests()
             };
         }
 
