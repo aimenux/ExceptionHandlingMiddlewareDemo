@@ -1,53 +1,52 @@
 ﻿using Api.Domain;
 
-namespace Api.Infrastructure
+namespace Api.Infrastructure;
+
+public class Proxy : IProxy
 {
-    public class Proxy : IProxy
+    public Task<Company> GetCompanyAsync(string registrationNumber, CancellationToken cancellationToken = default)
     {
-        public Task<Company> GetCompanyAsync(string registrationNumber, CancellationToken cancellationToken = default)
-        {
-            var nextValue = Randomize.Next();
+        var nextValue = Randomize.Next();
 
-            return nextValue switch
+        return nextValue switch
+        {
+            < 300 => Task.FromResult(new Company
             {
-                < 300 => Task.FromResult(new Company
-                {
-                    Name = Randomize.RandomString(10),
-                    RegistrationNumber = registrationNumber,
-                    Address = Randomize.RandomString(20),
-                    CompanyStatus = CompanyStatus.Active
-                }),
-                < 400 => Task.FromResult(new Company
-                {
-                    Name = Randomize.RandomString(10),
-                    RegistrationNumber = registrationNumber,
-                    Address = Randomize.RandomString(20),
-                    CompanyStatus = CompanyStatus.Delisted
-                }),
-                < 600 => Task.FromResult(new Company
-                {
-                    Name = Randomize.RandomString(10),
-                    RegistrationNumber = registrationNumber,
-                    CompanyStatus = CompanyStatus.Active
-                }),
-                < 700 => throw InfrastructureException.PartnerWebServiceIsDown(),
-                < 800 => throw InfrastructureException.PartnerWebServiceIsTakingTooLongToRespond(),
-                _ => throw InfrastructureException.PartnerWebServiceReceivingTooManyRequests()
-            };
-        }
+                Name = Randomize.RandomString(10),
+                RegistrationNumber = registrationNumber,
+                Address = Randomize.RandomString(20),
+                CompanyStatus = CompanyStatus.Active
+            }),
+            < 400 => Task.FromResult(new Company
+            {
+                Name = Randomize.RandomString(10),
+                RegistrationNumber = registrationNumber,
+                Address = Randomize.RandomString(20),
+                CompanyStatus = CompanyStatus.Delisted
+            }),
+            < 600 => Task.FromResult(new Company
+            {
+                Name = Randomize.RandomString(10),
+                RegistrationNumber = registrationNumber,
+                CompanyStatus = CompanyStatus.Active
+            }),
+            < 700 => throw InfrastructureException.PartnerWebServiceIsDown(),
+            < 800 => throw InfrastructureException.PartnerWebServiceIsTakingTooLongToRespond(),
+            _ => throw InfrastructureException.PartnerWebServiceReceivingTooManyRequests()
+        };
+    }
 
-        public class Randomize
-        {
-            private static readonly Random Random = new(Guid.NewGuid().GetHashCode());
+    private sealed class Randomize
+    {
+        private static readonly Random Random = new(Guid.NewGuid().GetHashCode());
 
-            public static int Next() => Random.Next(1, 1000);
+        public static int Next() => Random.Next(1, 1000);
             
-            public static string RandomString(int length)
-            {
-                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                return new string(Enumerable.Repeat(chars, length)
-                    .Select(s => s[Random.Next(s.Length)]).ToArray());
-            }
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[Random.Next(s.Length)]).ToArray());
         }
     }
 }

@@ -1,16 +1,15 @@
 ﻿using Api.Presentation.ViewModels;
 using FluentValidation;
 
-namespace Api.Presentation.Validators
+namespace Api.Presentation.Validators;
+
+public class CompanyRequestDtoValidator : AbstractValidator<CompanyRequestDto>
 {
-    public class CompanyRequestDtoValidator : AbstractValidator<CompanyRequestDto>
+    public CompanyRequestDtoValidator()
     {
-        public CompanyRequestDtoValidator()
-        {
             RuleFor(x => x.RegistrationNumber)
                 .NotEmpty()
                 .MinimumLength(5)
                 .MaximumLength(10);
         }
-    }
 }

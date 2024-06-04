@@ -15,4 +15,4 @@ Exceptions are thrown by :
 
 Exceptions are catched by the exception middleware and formatted using [problem details specification](https://datatracker.ietf.org/doc/html/rfc7807)
 
-**`Tools`** : vs22, net 6.0, xunit
+**`Tools`** : net 8.0, xunit
